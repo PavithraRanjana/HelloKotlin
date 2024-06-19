@@ -403,6 +403,20 @@ fun main() {
 //    animalArray()
 //    vet()
 
+    val addToX: (Int) -> Int = {x: Int -> x + 5}
+    val addXY: (Int, Int) -> Int = {x, y -> x + y}
+    val string: () -> String = {"Apple"}
+
+//    using it to replace the parameter
+    val addFive: (Int) -> Int = {it + 5}
+    val result = addFive(10)
+    println(result)
+
+//    declare the variable first. assing a value later
+    val calculations: (Int, Int) -> Int
+    calculations = { x: Int, y: Int -> x + y}
+
+
 
 }
 
