@@ -1,3 +1,5 @@
+import java.nio.DoubleBuffer
+
 // when statement 1
 fun whenStatement1(){
     // when statement
@@ -371,6 +373,93 @@ fun vet() {
     vet1.giveShot(animals)
 
 }
+
+//introduction to lambda 1
+fun lambda() {
+    //    creating basic lambda
+
+    val addToX: (Int) -> Int = {x: Int -> x + 5}
+    val addXY: (Int, Int) -> Int = {x, y -> x + y}
+    val string: () -> String = {"Apple"}
+
+//    using it to replace the parameter
+
+    val addFive: (Int) -> Int = {it + 5}
+    val result = addFive(10)
+    println(result)
+
+//    declare the variable first. assing a value later
+
+    val calculations: (Int, Int) -> Int
+    calculations = { x: Int, y: Int -> x + y}
+
+}
+
+fun lambda2() {
+    //    creating and assign lambda to a variable
+    val centigradeToFahrenheit = {x: Double -> x * 9/5 + 32}
+    val fahrenheitToCentigrade = {x: Double -> (x - 32) / 1.8}
+
+    //    creating the convert function
+    fun convert(x: Double, cConvertToF: (Double) -> Double): Double {
+        val result = cConvertToF(x)
+        println("$x Centigrade converted to $result Fahrenheit")
+        return result
+    }
+
+//    calling the converter function
+    val fahrenheit = convert(20.0, centigradeToFahrenheit)
+    val centigrade = convert(fahrenheit) {x: Double -> (x - 32) / 1.8}
+
+//    --------------------------------------------------------------------------------
+
+//    this function will return a lambda
+    fun conversionLambda(str: String) : (Double) -> Double {
+        if (str == "centigradeToFahrenheit") {
+            return {x: Double -> x * 9/5 + 32}
+        }
+        else if (str == "fahrenheitToCentigrade") {
+            return {x: Double -> (x - 32) / 1.8}
+        }
+        else if (str == "poundsToKilogram") {
+            return {x: Double -> x / 2.205}
+        }
+        else if (str == "KilogramTopounds") {
+            return {x: Double -> x * 2.205}
+        }
+        else {
+            return {it}
+        }
+    }
+
+    //    invoking the lambda returned by the conversionLambda()
+    val pounds = conversionLambda("KilogramTopounds") (2.5)
+    println("2.5Kg ----> $pounds pounds")
+
+    // invoking the lambda as an argument for a function
+    val tempInC = convert(20.0, conversionLambda("fahrenheitToCentigrade"))
+    println("tempInC's value is $tempInC")
+}
+
+// a function that both accepts and return lambda
+fun lambda3() {
+
+    val kgToPound = {x : Double -> x * 2.2}
+    val poundToTon = {x : Double -> x / 2000}
+
+    fun combine(lambda1: DoubleConversion, lambda2: DoubleConversion): DoubleConversion {
+        return {x: Double -> lambda2(lambda1(x))}
+    }
+
+    // calling the combine function
+    val kg = 2000.0
+    val tons = combine(kgToPound, poundToTon) (kg)
+    println("$kg kg -----> $tons ton")
+}
+
+typealias DoubleConversion = (Double) -> Double
+
+
 fun main() {
 
 //    whenStatement1()
@@ -402,19 +491,17 @@ fun main() {
 //    animalClass()
 //    animalArray()
 //    vet()
+//    lambda2()
+    lambda3()
 
-    val addToX: (Int) -> Int = {x: Int -> x + 5}
-    val addXY: (Int, Int) -> Int = {x, y -> x + y}
-    val string: () -> String = {"Apple"}
 
-//    using it to replace the parameter
-    val addFive: (Int) -> Int = {it + 5}
-    val result = addFive(10)
-    println(result)
 
-//    declare the variable first. assing a value later
-    val calculations: (Int, Int) -> Int
-    calculations = { x: Int, y: Int -> x + y}
+
+
+
+
+
+
 
 
 
